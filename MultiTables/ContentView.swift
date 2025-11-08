@@ -21,7 +21,7 @@ struct ContentView: View {
     
     @State private var gameState: GameState = .settings
     @State private var upperLimit: Int = 1
-    @State private var questionNumber: Int = 1
+    @State private var questionCount: Int = 1
     @State private var currentQuestionIndex: Int = 0
     @State private var userAnswer: Int = 0
     @State private var questions = [Question]()
@@ -34,7 +34,7 @@ struct ContentView: View {
                 case .settings:
                     SettingsView(
                         upperLimit: $upperLimit,
-                        questionCount: $questionNumber,
+                        questionCount: $questionCount,
                         multiplicationRange: multiplicationRange,
                         startGameAction: startGame
                     )
@@ -43,7 +43,7 @@ struct ContentView: View {
                         QuestionView(
                             question: questions[currentQuestionIndex],
                             questionNumber: currentQuestionIndex + 1,
-                            totalQuestions: questionNumber,
+                            totalQuestions: questionCount,
                             userAnswer: $userAnswer,
                             submitAction: submitAnswer
                         )
@@ -51,7 +51,7 @@ struct ContentView: View {
                 case .results:
                     ResultsView(
                         score: score,
-                        totalQuestions: questionNumber,
+                        totalQuestions: questionCount,
                         playAgainAction: resetGame
                     )
                 }
@@ -73,7 +73,7 @@ struct ContentView: View {
         
         possiblePairs.shuffle()
         
-        for pair in possiblePairs.prefix(questionNumber) {
+        for pair in possiblePairs.prefix(questionCount) {
             let questionText = "\(pair.0) x \(pair.1)"
             let result = pair.0 * pair.1
             generatedQuestions.append(Question(text: questionText, result: result))
@@ -98,7 +98,7 @@ struct ContentView: View {
         userAnswer = 0
         currentQuestionIndex += 1
         
-        if currentQuestionIndex >= questionNumber {
+        if currentQuestionIndex >= questionCount {
             gameState = .results
         }
     }
